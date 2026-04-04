@@ -59,6 +59,18 @@ services:
     volumes:
       - ../archivdin-frontend:/app
       - node_modules:/app/node_modules
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  voice-actor:
+    build:
+      context: ../voice-actor
+    container_name: archivdin-voice
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8001:8001"
+    command: uvicorn voice_service:app --host 0.0.0.0 --port 8001
 
 volumes:
   postgres_data:
